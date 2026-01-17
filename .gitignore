@@ -1,0 +1,18 @@
+# Eclipse
+
+.metadata/
+
+.settings/
+
+.classpath
+
+.project
+
+
+# Java
+
+*.class
+
+bin/
+
+target/
