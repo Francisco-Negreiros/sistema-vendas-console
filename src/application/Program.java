@@ -9,8 +9,8 @@ public class Program {
     public static void main(String[] args) {
 
         // 1️⃣ Criando produtos
-        Produto arroz = new Produto("Arroz 1kg", 7.50);
-        Produto feijao = new Produto("Feijão 1kg", 8.90);
+        Produto arroz = new Produto("Arroz", "1kg", 7.50);
+        Produto feijao = new Produto("Feijão", "1kg", 8.90);
 
         // 2️⃣ Criando itens da venda
         ItemVenda item1 = new ItemVenda(arroz, 2);
