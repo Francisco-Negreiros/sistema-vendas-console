@@ -31,6 +31,29 @@ public class Produto {
     public TipoProduto getTipo() {
         return tipo;
     }
+    
+    @Override
+    public String toString() {
+        return "Código: " + codigo +
+               " | Nome: " + nome +
+               " | Preço: R$ " + precoUnitario +
+               " | Tipo: " + tipo;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+
+        Produto other = (Produto) obj;
+        return codigo.equals(other.codigo);
+    }
+
+    @Override
+    public int hashCode() {
+        return codigo.hashCode();
+    }
 
 }
 
