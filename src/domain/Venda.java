@@ -5,11 +5,7 @@ import java.util.List;
 
 public class Venda {
 
-    private List<ItemVenda> itens;
-
-    public Venda() {
-        this.itens = new ArrayList<>();
-    }
+    private List<ItemVenda> itens = new ArrayList<>();
 
     public void adicionarItem(ItemVenda item) {
         itens.add(item);
@@ -17,16 +13,23 @@ public class Venda {
 
     public double calcularTotal() {
         double total = 0.0;
-
         for (ItemVenda item : itens) {
             total += item.calcularSubtotal();
         }
-
         return total;
     }
 
-    public List<ItemVenda> getItens() {
-        return itens;
+    public void imprimirResumo() {
+        System.out.println("=== RESUMO DA VENDA ===");
+
+        for (ItemVenda item : itens) {
+            System.out.printf("- %s: R$ %.2f%n",
+                    item.getProduto().getNome(),
+                    item.calcularSubtotal());
+        }
+
+        System.out.printf("TOTAL: R$ %.2f%n", calcularTotal());
     }
 }
+
 
