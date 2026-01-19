@@ -32,6 +32,19 @@ public class Produto {
         return tipo;
     }
     
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setPrecoUnitario(double precoUnitario) {
+        this.precoUnitario = precoUnitario;
+    }
+
+    public void setTipo(TipoProduto tipo) {
+        this.tipo = tipo;
+    }
+
+    
     @Override
     public String toString() {
         return "Código: " + codigo +
