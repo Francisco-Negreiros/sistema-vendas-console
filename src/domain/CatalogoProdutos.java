@@ -1,62 +1,52 @@
 package domain;
 
-import java.util.ArrayList;
 import java.util.List;
+
 import domain.exception.ProdutoDuplicadoException;
-import domain.exception.ProdutoNaoEncontradoException;
+import domain.repository.ProdutoRepository;
 
 public class CatalogoProdutos {
 
-    private List<Produto> produtos;
+	private ProdutoRepository repository;
 
-public CatalogoProdutos() {
-    this.produtos = new ArrayList<>();
-  }
+	public CatalogoProdutos(ProdutoRepository repository) {
+	    this.repository = repository;
+	}
+	
+	public void adicionarProduto(Produto produto) {
 
-public void adicionarProduto(Produto produto) {
+	    if (repository.existePorCodigo(produto.getCodigo())) {
+	        throw new ProdutoDuplicadoException(produto.getCodigo());
+	    }
 
-    if (buscarSeExistir(produto.getCodigo()) != null) {
-        throw new ProdutoDuplicadoException(produto.getCodigo());
-    }
-    produtos.add(produto);
-}
+	    repository.salvar(produto);
+	}
 
-public List<Produto> listarProdutos() {
-    return produtos;
-}
 
-private Produto buscarSeExistir(String codigo) {
-    for (Produto p : produtos) {
-        if (p.getCodigo().equals(codigo)) {
-            return p;
-        }
-    }
-    return null;
-}
+	public List<Produto> listarProdutos() {
+	    return repository.listarTodos();
+	}
 
-public Produto buscarPorCodigo(String codigo) {
-    Produto produto = buscarSeExistir(codigo);
 
-    if (produto == null) {
-        throw new ProdutoNaoEncontradoException(codigo);
-    }
+	public Produto buscarPorCodigo(String codigo) {
+	    return repository.buscarPorCodigo(codigo);
+	}
+	
+	public void removerProduto(String codigo) {
+	    Produto produto = repository.buscarPorCodigo(codigo);
+	    repository.remover(produto);
+	}
 
-    return produto;
-}
 
-public void removerProduto(String codigo) {
-    Produto produto = buscarPorCodigo(codigo);
-    produtos.remove(produto);
-}
 
-public void editarProduto(String codigo, String novoNome,
-        double novoPreco, TipoProduto novoTipo) {
+	public void editarProduto(String codigo, String novoNome, double novoPreco, TipoProduto novoTipo) {
 
-    Produto produto = buscarPorCodigo(codigo);
+	    Produto produto = repository.buscarPorCodigo(codigo);
 
-    produto.setNome(novoNome);
-    produto.setPrecoUnitario(novoPreco);
-    produto.setTipo(novoTipo);
-}
-
+	    produto.setNome(novoNome);
+	    produto.setPrecoUnitario(novoPreco);
+	    produto.setTipo(novoTipo);
+	    repository.atualizar(produto);
+	}
+	
 }

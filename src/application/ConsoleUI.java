@@ -1,12 +1,13 @@
 package application;
 
 import java.util.Scanner;
+
 import domain.CatalogoProdutos;
 import domain.Produto;
 import domain.TipoProduto;
 import domain.exception.ProdutoDuplicadoException;
 import domain.exception.ProdutoNaoEncontradoException;
-
+import domain.repository.ProdutoRepositoryArquivo;
 
 public class ConsoleUI {
 
@@ -15,7 +16,10 @@ public class ConsoleUI {
 
     public ConsoleUI() {
         this.scanner = new Scanner(System.in);
-        this.catalogo = new CatalogoProdutos();
+        
+        ProdutoRepositoryArquivo repository = new ProdutoRepositoryArquivo();
+        this.catalogo = new CatalogoProdutos(repository);
+        		
     }
 
     public void iniciar() {
@@ -119,6 +123,7 @@ public class ConsoleUI {
         }
     }
 
+
     private void buscarProduto() {
 
         System.out.print("Código do produto: ");
@@ -126,13 +131,13 @@ public class ConsoleUI {
 
         try {
             Produto produto = catalogo.buscarPorCodigo(codigo);
+            System.out.println("✅ Produto encontrado:");
             System.out.println(produto);
 
         } catch (ProdutoNaoEncontradoException e) {
-            System.out.println("Erro: " + e.getMessage());
+            System.out.println("❌ " + e.getMessage());
         }
     }
-
     
     private void removerProduto() {
 
