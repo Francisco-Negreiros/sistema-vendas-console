@@ -1,7 +1,6 @@
 package application;
 
 import java.util.Scanner;
-
 import domain.CatalogoProdutos;
 import domain.Produto;
 import domain.TipoProduto;
@@ -10,7 +9,7 @@ import domain.exception.ProdutoNaoEncontradoException;
 import domain.repository.ProdutoRepositoryArquivo;
 
 public class ConsoleUI {
-
+	
     private Scanner scanner;
     private CatalogoProdutos catalogo;
 

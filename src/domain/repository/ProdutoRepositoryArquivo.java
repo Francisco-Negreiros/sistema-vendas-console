@@ -9,14 +9,73 @@ import domain.exception.ProdutoNaoEncontradoException;
 
 public class ProdutoRepositoryArquivo implements ProdutoRepository {
 	
-	
 	private static final String CAMINHO_ARQUIVO = "dados/produtos.txt";
+	
+	private List<Produto> produtos = new ArrayList<>();
 	
 	public ProdutoRepositoryArquivo() {
 	    carregarDoArquivo();
 	}
 	
-	private List<Produto> produtos = new ArrayList<>();
+	@Override
+	public void salvar(Produto produto) {
+
+	    produtos.add(produto);
+
+	    File arquivo = new File(CAMINHO_ARQUIVO);
+	    arquivo.getParentFile().mkdirs(); // 🔥 ESSA LINHA É A CHAVE
+
+	    try (BufferedWriter writer = new BufferedWriter(
+	            new FileWriter(arquivo, true))) {
+
+	        String linha = produto.getCodigo() + ";" +
+	                       produto.getNome() + ";" +
+	                       produto.getPrecoUnitario() + ";" +
+	                       produto.getTipo();
+
+	        writer.write(linha);
+	        writer.newLine();
+
+	    } catch (IOException e) {
+	        throw new RuntimeException("Erro ao salvar produto em arquivo", e);
+	    }
+	}
+	
+	 @Override
+	    public Produto buscarPorCodigo(String codigo) {
+	        for (Produto p : produtos) {
+	            if (p.getCodigo().equals(codigo)) {
+	                return p;
+	            }
+	        }
+	        throw new ProdutoNaoEncontradoException(codigo);
+	    }
+	 
+	 @Override
+	    public List<Produto> listarTodos() {
+	        return produtos;
+	    }
+	 
+	 @Override
+	    public void remover(Produto produto) {
+	        produtos.remove(produto);
+	        reescreverArquivo();
+	    }
+	 
+	 @Override
+	    public void atualizar(Produto produto) {
+	        reescreverArquivo();
+	    }
+	 
+	 @Override
+	    public boolean existePorCodigo(String codigo) {
+	        for (Produto p : produtos) {
+	            if (p.getCodigo().equals(codigo)) {
+	                return true;
+	            }
+	        }
+	        return false;
+	    }
 	
 	private void carregarDoArquivo() {
 
@@ -48,46 +107,6 @@ public class ProdutoRepositoryArquivo implements ProdutoRepository {
 	        throw new RuntimeException("Erro ao carregar produtos do arquivo", e);
 	    }
 	}
-
-	@Override
-	public void salvar(Produto produto) {
-
-	    produtos.add(produto);
-
-	    File arquivo = new File(CAMINHO_ARQUIVO);
-	    arquivo.getParentFile().mkdirs(); // 🔥 ESSA LINHA É A CHAVE
-
-	    try (BufferedWriter writer = new BufferedWriter(
-	            new FileWriter(arquivo, true))) {
-
-	        String linha = produto.getCodigo() + ";" +
-	                       produto.getNome() + ";" +
-	                       produto.getPrecoUnitario() + ";" +
-	                       produto.getTipo();
-
-	        writer.write(linha);
-	        writer.newLine();
-
-	    } catch (IOException e) {
-	        throw new RuntimeException("Erro ao salvar produto em arquivo", e);
-	    }
-	}
-
-    @Override
-    public Produto buscarPorCodigo(String codigo) {
-        for (Produto p : produtos) {
-            if (p.getCodigo().equals(codigo)) {
-                return p;
-            }
-        }
-        throw new ProdutoNaoEncontradoException(codigo);
-    }
-
-    @Override
-    public List<Produto> listarTodos() {
-        return produtos;
-    }
-
     
     private void reescreverArquivo() {
 
@@ -110,29 +129,5 @@ public class ProdutoRepositoryArquivo implements ProdutoRepository {
         }
     }
     
-    
-    @Override
-    public void atualizar(Produto produto) {
-        reescreverArquivo();
-    }
-    
-    @Override
-    public void remover(Produto produto) {
-        produtos.remove(produto);
-        reescreverArquivo();
-    }
-
-    
-    @Override
-    public boolean existePorCodigo(String codigo) {
-        for (Produto p : produtos) {
-            if (p.getCodigo().equals(codigo)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
 }
 

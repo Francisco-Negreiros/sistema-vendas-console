@@ -37,8 +37,6 @@ public class CatalogoProdutos {
 	    repository.remover(produto);
 	}
 
-
-
 	public void editarProduto(String codigo, String novoNome, double novoPreco, TipoProduto novoTipo) {
 
 	    Produto produto = repository.buscarPorCodigo(codigo);

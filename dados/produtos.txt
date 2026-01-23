@@ -1,1 +1,3 @@
 01;Arroz Premium;7.5;UNIDADE
+02;Feijão;8.0;UNIDADE
+03;Banana;5.0;PESO
