@@ -16,3 +16,7 @@
 bin/
 
 target/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
